@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Question For You 💕</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
 
   <style>
@@ -22,107 +19,87 @@
       position: relative;
     }
 
-    /* ── Animated gradient background ── */
+    /* ── Background ── */
     .bg-anim {
       position: fixed; inset: 0;
       background: linear-gradient(-45deg, #c94b8a, #e6457a, #f093fb, #f9528a, #c44569, #ff6b9d);
-      background-size: 500% 500%;
-      animation: bgFlow 14s ease infinite;
+      background-size: 400% 400%;
+      animation: bgFlow 16s ease infinite;
       z-index: 0;
+      will-change: background-position;
     }
     @keyframes bgFlow {
-      0%   { background-position: 0%   50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0%   50%; }
+      0%,100% { background-position: 0%   50%; }
+      50%      { background-position: 100% 50%; }
     }
 
-    /* ── Depth orbs – large blurred blobs for sense of 3D space ── */
+    /* Soft depth orbs */
     .orbs { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
     .orb {
       position: absolute; border-radius: 50%;
       filter: blur(80px);
+      will-change: transform;
       animation: orbDrift ease-in-out infinite alternate;
     }
-    .orb1 { width: 520px; height: 520px; background: rgba(255, 90,180,.28); top:-160px; left:-160px; animation-duration: 9s; }
-    .orb2 { width: 420px; height: 420px; background: rgba(180, 30,140,.22); bottom:-120px; right:-120px; animation-duration: 11s; }
-    .orb3 { width: 360px; height: 360px; background: rgba(255,160,210,.18); top:40%; left:55%; animation-duration: 13s; }
+    .orb1 { width: 460px; height: 460px; background: rgba(255,90,170,.20); top:-140px; left:-140px; animation-duration: 10s; }
+    .orb2 { width: 360px; height: 360px; background: rgba(180,30,140,.16); bottom:-100px; right:-100px; animation-duration: 13s; }
     @keyframes orbDrift {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(40px,30px) scale(1.12); }
+      from { transform: translate(0, 0); }
+      to   { transform: translate(38px, 28px); }
     }
 
     /* ── Floating particles ── */
     .particles { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
     .particle {
-      position: absolute; bottom: -60px;
+      position: absolute; bottom: -50px;
       animation: rise linear infinite;
-      opacity: 0; user-select: none; pointer-events: none;
+      opacity: 0;
+      will-change: transform, opacity;
     }
     @keyframes rise {
-      0%   { transform: translateY(0) rotate(0deg) scale(1);      opacity: 0; }
-      8%   { opacity: .65; }
-      90%  { opacity: .25; }
-      100% { transform: translateY(-115vh) rotate(800deg) scale(.4); opacity: 0; }
+      0%   { transform: translateY(0) rotate(0deg);     opacity: 0; }
+      8%   { opacity: .55; }
+      90%  { opacity: .20; }
+      100% { transform: translateY(-112vh) rotate(680deg); opacity: 0; }
     }
 
-    /* ── 3D Scene wrapper (enables perspective tilt) ── */
-    .scene {
-      perspective: 900px;
-      perspective-origin: 50% 50%;
-      z-index: 10;
-    }
-
-    /* ── Glass card ── */
+    /* ── Card ── */
     .glass-card {
       position: relative;
+      z-index: 10;
       background: rgba(255,255,255,.14);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255,255,255,.40);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,.38);
       border-radius: 2rem;
       padding: 3rem 3.5rem 2.5rem;
-      max-width: 550px;
+      max-width: 540px;
       width: 92vw;
       text-align: center;
       box-shadow:
-        0 40px 80px rgba(160,30,90,.40),
-        0  0   0 1px rgba(255,255,255,.14),
+        0 28px 60px rgba(160,30,90,.38),
         inset 0 1px 0 rgba(255,255,255,.50),
-        inset 0 -1px 0 rgba(0,0,0,.08);
-      overflow: visible;
-      transform-style: preserve-3d;
-      animation: cardIn .9s cubic-bezier(.175,.885,.32,1.275) both;
-      /* CSS variable for mouse-glare position */
-      --mx: 50%; --my: 35%;
+        inset 0 -1px 0 rgba(0,0,0,.06);
+      animation: cardIn .85s cubic-bezier(.175,.885,.32,1.275) both;
+      will-change: transform, opacity;
     }
-
     /* Shimmer top edge */
     .glass-card::before {
       content: '';
       position: absolute;
       top: 0; left: 8%; right: 8%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), rgba(255,210,235,.7), rgba(255,255,255,.95), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.92), rgba(255,210,235,.7), rgba(255,255,255,.92), transparent);
       background-size: 200% 100%;
-      animation: shimmerEdge 3s linear infinite;
+      animation: shimmerEdge 3.5s linear infinite;
       border-radius: 9999px;
     }
-    /* Mouse-tracking inner glare */
-    .glass-card::after {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.18) 0%, transparent 55%);
-      pointer-events: none;
-      border-radius: 2rem;
-    }
-
     @keyframes shimmerEdge {
       0%   { background-position:  200% 0; }
       100% { background-position: -200% 0; }
     }
     @keyframes cardIn {
-      from { opacity: 0; transform: scale(.62) translateY(48px) rotateX(12deg); }
-      to   { opacity: 1; transform: scale(1)   translateY(0)    rotateX(0deg); }
+      from { opacity: 0; transform: scale(.65) translateY(42px); }
+      to   { opacity: 1; transform: scale(1)   translateY(0); }
     }
 
     /* ── Typography ── */
@@ -133,33 +110,74 @@
       font-size: clamp(2.6rem, 8vw, 4.2rem);
       color: #fff;
       line-height: 1.2;
-      /* 3D extruded text effect */
       text-shadow:
-        1px 1px 0 rgba(210,55,105,.95),
-        2px 2px 0 rgba(190,45, 95,.80),
-        3px 3px 0 rgba(170,35, 82,.60),
-        4px 4px 0 rgba(150,25, 68,.40),
-        5px 5px 0 rgba(130,18, 55,.25),
-        6px 6px 14px rgba(0,0,0,.20),
-        0 0 55px rgba(255,130,175,.45);
-      transition: opacity .35s ease, transform .35s ease;
+        1px 1px 0 rgba(210,55,105,.9),
+        2px 2px 0 rgba(180,38,82,.65),
+        3px 3px 0 rgba(148,22,65,.40),
+        4px 4px 10px rgba(0,0,0,.18),
+        0 0 50px rgba(255,130,175,.4);
+      transition: opacity .28s ease, transform .28s ease;
     }
     #subText {
       font-size: 1.05rem;
       color: rgba(255,255,255,.82);
       font-style: italic; font-weight: 300;
       letter-spacing: .05em;
-      transition: opacity .35s ease, transform .35s ease;
+      transition: opacity .28s ease, transform .28s ease;
     }
-    .text-fade { opacity: 0; transform: translateY(-8px); }
+    .text-fade { opacity: 0 !important; transform: translateY(-8px) !important; }
 
-    /* ── Yes button – 3D raised block ── */
+    /* ── Cartoon cat ── */
+    .emoji-wrap {
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height .5s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;
+    }
+    .emoji-wrap.open { max-height: 240px; opacity: 1; }
+
+    .cat-box {
+      display: inline-block;
+      position: relative;
+      padding: 1rem 0 .5rem;
+    }
+    .cat-face {
+      font-size: 7rem;
+      display: block;
+      line-height: 1;
+      filter:
+        drop-shadow(2px 2px 0 rgba(0,0,0,.22))
+        drop-shadow(5px 5px 0 rgba(0,0,0,.14))
+        drop-shadow(9px 9px 14px rgba(0,0,0,.10));
+      animation: catSob .7s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes catSob {
+      from { transform: rotate(-5deg) scale(1); }
+      to   { transform: rotate( 5deg) scale(1.06) translateY(-5px); }
+    }
+    /* Animated tears */
+    .tear {
+      position: absolute;
+      width: 7px; height: 0;
+      background: linear-gradient(to bottom, rgba(120,200,255,.95), rgba(80,160,255,.3));
+      border-radius: 0 0 50% 50%;
+      top: 48%; /* approximately eye level */
+      animation: tearFall 1.1s ease-in infinite;
+      will-change: height, opacity, transform;
+    }
+    .tear-l { left: 26%; animation-delay: 0s; }
+    .tear-r { right: 22%; animation-delay: .55s; }
+    @keyframes tearFall {
+      0%   { height: 0;    opacity: 1;  transform: translateY(0); }
+      25%  { height: 14px; opacity: 1;  transform: translateY(0); }
+      80%  { height: 14px; opacity: .8; transform: translateY(22px); }
+      100% { height: 14px; opacity: 0;  transform: translateY(32px); }
+    }
+
+    /* ── Yes button ── */
     .btn-yes {
-      display: inline-flex;
-      align-items: center; gap: .45rem;
-      background: linear-gradient(160deg, #ff7eac 0%, #f43f5e 50%, #d4234a 100%);
-      color: #fff;
-      border: none;
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: linear-gradient(155deg, #ff7eac 0%, #f43f5e 52%, #d4234a 100%);
+      color: #fff; border: none;
       border-radius: 100px;
       padding: .9rem 3rem;
       font-family: 'Cormorant Garamond', serif;
@@ -168,20 +186,13 @@
       cursor: pointer;
       position: relative; overflow: hidden;
       transform-origin: center bottom;
-      transform-style: preserve-3d;
-      /* Stacked box-shadows create physical depth */
+      will-change: transform, box-shadow;
       box-shadow:
-        0 1px 0 #c8254a,
-        0 2px 0 #b51e40,
-        0 3px 0 #a21836,
-        0 4px 0 #8f112c,
-        0 5px 0 #7c0a22,
-        0 6px 0 #690318,
-        0 8px 14px rgba(0,0,0,.30),
-        0 18px 40px rgba(244,63,94,.50);
-      transition: box-shadow .12s ease, transform .12s ease, filter .2s ease;
+        0 4px 0 #9e1234,
+        0 8px 18px rgba(0,0,0,.26),
+        0 16px 38px rgba(244,63,94,.46);
+      transition: box-shadow .12s ease, filter .18s ease;
     }
-    /* Shine sweep */
     .btn-yes::after {
       content: '';
       position: absolute; inset: 0;
@@ -190,14 +201,10 @@
       transition: transform .65s ease;
     }
     .btn-yes:hover::after { transform: translateX(230%) skewX(-15deg); }
-    .btn-yes:hover { filter: brightness(1.08); }
-    /* Press down – shadows collapse */
+    .btn-yes:hover  { filter: brightness(1.08); }
     .btn-yes:active {
-      transform: translateY(6px) !important;
-      box-shadow:
-        0 1px 0 #c8254a,
-        0 2px 6px rgba(0,0,0,.22),
-        0 4px 14px rgba(244,63,94,.35) !important;
+      transform: translateY(4px) !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2), 0 4px 14px rgba(244,63,94,.3) !important;
     }
 
     .heart-pulse { display: inline-block; animation: heartbeat 1.4s ease-in-out infinite; }
@@ -208,17 +215,17 @@
       42%      { transform: scale(1.28); }
     }
     @keyframes yesGlow {
-      0%,100% { filter: brightness(1)    drop-shadow(0 0  0px rgba(244,63,94,0)); }
-      50%      { filter: brightness(1.05) drop-shadow(0 0 18px rgba(244,63,94,.55)); }
+      0%,100% { filter: brightness(1)    drop-shadow(0 0  0   rgba(244,63,94,0)); }
+      50%      { filter: brightness(1.06) drop-shadow(0 0 18px rgba(244,63,94,.55)); }
     }
     .yes-glowing { animation: yesGlow 2.2s ease-in-out infinite; }
 
     /* ── No button ── */
     .btn-no {
       display: inline-flex; align-items: center;
-      background: rgba(255,255,255,.12);
+      background: rgba(255,255,255,.13);
       color: rgba(255,255,255,.75);
-      border: 1px solid rgba(255,255,255,.30);
+      border: 1px solid rgba(255,255,255,.28);
       border-radius: 100px;
       padding: .85rem 2.5rem;
       font-family: 'Cormorant Garamond', serif;
@@ -226,325 +233,279 @@
       letter-spacing: .08em;
       cursor: pointer;
       backdrop-filter: blur(6px);
-      transition: background .2s ease, color .2s ease, left .22s cubic-bezier(.34,1.56,.64,1), top .22s cubic-bezier(.34,1.56,.64,1);
+      will-change: left, top, opacity;
+      transition:
+        background .2s ease,
+        opacity .8s ease,
+        left  .2s cubic-bezier(.34,1.56,.64,1),
+        top   .2s cubic-bezier(.34,1.56,.64,1);
     }
-    .btn-no:hover { background: rgba(255,255,255,.22); color: rgba(255,255,255,.95); }
-    .btn-no.running { position: fixed !important; z-index: 999; margin: 0; }
-
-    /* ── Crying emoji – deeper 3D layers ── */
-    .emoji-wrap {
-      max-height: 0; overflow: hidden; opacity: 0;
-      transition: max-height .55s cubic-bezier(.34,1.56,.64,1), opacity .4s ease;
-    }
-    .emoji-wrap.open { max-height: 200px; opacity: 1; }
-
-    .emoji-3d {
-      font-size: 6rem;
-      display: inline-block;
-      filter:
-        drop-shadow( 2px  2px  0   rgba(0,0,0,.30))
-        drop-shadow( 5px  5px  0   rgba(0,0,0,.20))
-        drop-shadow( 9px  9px  0   rgba(0,0,0,.12))
-        drop-shadow(13px 13px 18px rgba(0,0,0,.10));
-      animation: emojiWobble .75s ease-in-out infinite alternate;
-    }
-    @keyframes emojiWobble {
-      from { transform: rotate(-8deg) scale(1)    translateZ(0); }
-      to   { transform: rotate( 8deg) scale(1.08) translateZ(20px); }
+    .btn-no:hover { background: rgba(255,255,255,.22); }
+    .btn-no.running {
+      position: fixed !important;
+      z-index: 999;
+      margin: 0;
     }
 
-    /* ── Divider ornament ── */
+    /* ── Ornament ── */
     .ornament {
       display: flex; align-items: center; gap: .8rem;
       color: rgba(255,255,255,.4); font-size: 1.25rem; letter-spacing: .55rem;
+      margin-bottom: 1.4rem;
     }
     .ornament::before, .ornament::after {
       content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.28);
     }
 
-    /* ── Celebration screen ── */
+    /* ── Buttons row ── */
+    .btn-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; margin-top: .25rem;
+    }
+
+    /* ── Celebration ── */
     #celebration {
       position: fixed; inset: 0; z-index: 1000;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       background: linear-gradient(-45deg, #c94b8a, #e6457a, #f093fb, #f9528a, #c44569, #ff6b9d);
-      background-size: 500% 500%;
+      background-size: 400% 400%;
       opacity: 0; pointer-events: none;
-      transform: scale(.86) rotateX(8deg);
-      transition: opacity .75s cubic-bezier(.175,.885,.32,1.275), transform .75s cubic-bezier(.175,.885,.32,1.275);
-      perspective: 800px;
+      transform: scale(.88);
+      transition: opacity .65s cubic-bezier(.175,.885,.32,1.275),
+                  transform .65s cubic-bezier(.175,.885,.32,1.275);
     }
     #celebration.show {
-      opacity: 1; pointer-events: all;
-      transform: scale(1) rotateX(0deg);
+      opacity: 1; pointer-events: all; transform: scale(1);
       animation: bgFlow 10s ease infinite;
     }
-    .celeb-emoji {
-      font-size: 7rem;
-      display: inline-block;
+    .celeb-cat {
+      font-size: 8rem; display: inline-block;
       filter:
-        drop-shadow( 3px  3px  0 rgba(0,0,0,.25))
-        drop-shadow( 7px  7px  0 rgba(0,0,0,.15))
-        drop-shadow(12px 12px 20px rgba(0,0,0,.12));
-      animation: emojiWobble .75s ease-in-out infinite alternate;
+        drop-shadow(3px 3px 0 rgba(0,0,0,.22))
+        drop-shadow(7px 7px 14px rgba(0,0,0,.14));
+      animation: catSob .75s ease-in-out infinite alternate;
     }
     .celeb-hearts {
       font-size: 2rem; letter-spacing: .45rem;
-      display: inline-block; animation: heartbeat 1.4s ease-in-out infinite;
+      display: inline-block;
+      animation: heartbeat 1.4s ease-in-out infinite;
     }
 
     /* ── Confetti ── */
     .confetti-piece {
       position: fixed; pointer-events: none; z-index: 1100;
+      will-change: transform, opacity;
       animation: confettiFall linear forwards;
     }
     @keyframes confettiFall {
-      0%   { opacity: 1; transform: translateY(-40px) rotate(0deg) scale(1); }
-      100% { opacity: 0; transform: translateY(108vh) rotate(760deg) scale(.4); }
+      0%   { opacity: 1; transform: translateY(-40px) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(108vh) rotate(700deg); }
     }
+
+    /* spacing helpers */
+    .mb1 { margin-bottom: .5rem; }
+    .mb2 { margin-bottom: 1rem; }
+    .mb3 { margin-bottom: 1.5rem; }
+    .mb4 { margin-bottom: 1.8rem; }
+    .mb5 { margin-bottom: 2.5rem; }
+    .mt4 { margin-top: 1rem; }
+    .italic-sm { font-style:italic; font-size:.95rem; color:rgba(255,255,255,.82); }
+    .footnote  { color:rgba(255,255,255,.28); font-size:.76rem; margin-top:1.8rem; letter-spacing:.12em; font-weight:300; }
   </style>
 </head>
 
 <body>
 
-  <!-- Background layers -->
   <div class="bg-anim"></div>
   <div class="orbs">
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
   </div>
   <div class="particles" id="particles"></div>
 
-  <!-- ═══════════════ 3D SCENE + CARD ═══════════════ -->
-  <div class="scene" id="cardScene">
-    <div class="glass-card" id="mainCard">
+  <!-- ════════════ CARD ════════════ -->
+  <div class="glass-card" id="mainCard">
 
-      <div class="ornament mb-5">💕 💖 💕</div>
+    <div class="ornament">💕 💖 💕</div>
 
-      <h1 id="questionText" class="mb-3">Will you go on a date with me?</h1>
+    <h1 id="questionText" class="mb2">Will you go on a date with me?</h1>
+    <p  id="subText"       class="mb4">I promise it'll be absolutely magical ✨</p>
 
-      <p id="subText" class="mb-7">I promise it'll be absolutely magical ✨</p>
-
-      <!-- Crying emoji (hidden initially) -->
-      <div class="emoji-wrap mb-5" id="emojiWrap">
-        <div class="py-3">
-          <span class="emoji-3d" id="emojiEl">😢</span>
-          <p id="emojiCaption" style="color:rgba(255,255,255,.82);font-style:italic;font-size:.95rem;margin-top:.5rem;">
-            Please don't say no... 🥺
-          </p>
-        </div>
+    <!-- Cartoon crying cat (hidden until No is clicked) -->
+    <div class="emoji-wrap mb3" id="emojiWrap">
+      <div class="cat-box">
+        <span class="tear tear-l"></span>
+        <span class="tear tear-r"></span>
+        <span class="cat-face" id="catFace">😿</span>
       </div>
-
-      <!-- Buttons -->
-      <div id="btnContainer" class="flex items-center justify-center gap-6 mt-1">
-        <button class="btn-yes yes-glowing" id="yesBtn">
-          <span class="heart-pulse">💗</span>&nbsp;Yes!
-        </button>
-        <button class="btn-no" id="noBtn">No</button>
-      </div>
-
-      <p style="color:rgba(255,255,255,.28);font-size:.76rem;margin-top:1.8rem;letter-spacing:.12em;font-weight:300;">
-        made with love, just for you ♡
-      </p>
-
+      <p id="catCaption" class="italic-sm mb1">Please don't say no... 🥺</p>
     </div>
+
+    <div class="btn-row">
+      <button class="btn-yes yes-glowing" id="yesBtn">
+        <span class="heart-pulse">💗</span>&nbsp;Yes!
+      </button>
+      <button class="btn-no" id="noBtn">No</button>
+    </div>
+
+    <p class="footnote">made with love, just for you ♡</p>
+
   </div>
 
-  <!-- ═══════════════ CELEBRATION ═══════════════ -->
+  <!-- ════════════ CELEBRATION ════════════ -->
   <div id="celebration">
     <div class="particles" id="celebParticles"></div>
     <div style="position:relative;z-index:10;text-align:center;padding:2.5rem 2rem;">
-      <div class="celeb-emoji mb-3">🥰</div>
-
+      <div class="celeb-cat mb2">😻</div>
       <h1 class="gv" style="font-size:clamp(4rem,14vw,7rem);color:#fff;line-height:1.05;
-        text-shadow:
-          2px 2px 0 rgba(200,40,100,.9),
-          4px 4px 0 rgba(170,30,85,.65),
-          6px 6px 0 rgba(140,20,70,.40),
-          8px 8px 20px rgba(0,0,0,.22),
-          0 0 60px rgba(255,150,200,.5);">
+          text-shadow:2px 2px 0 rgba(200,40,100,.85),4px 4px 0 rgba(155,18,65,.5),6px 6px 16px rgba(0,0,0,.2);">
         Yay!
       </h1>
-
-      <p style="font-family:'Cormorant Garamond',serif;color:#fff;font-size:clamp(1.5rem,4.5vw,2.4rem);
-        font-style:italic;font-weight:300;text-shadow:0 2px 16px rgba(0,0,0,.18);
-        line-height:1.45;max-width:400px;margin:.8rem auto 0;">
+      <p style="font-family:'Cormorant Garamond',serif;color:#fff;
+          font-size:clamp(1.5rem,4.5vw,2.4rem);font-style:italic;font-weight:300;
+          line-height:1.45;max-width:400px;margin:.8rem auto 0;
+          text-shadow:0 2px 14px rgba(0,0,0,.18);">
         See you tomorrow, princess
       </p>
-
-      <div class="celeb-hearts mt-4">💖 💗 💕 💓 💖</div>
+      <div class="celeb-hearts mt4">💖 💗 💕 💓 💖</div>
     </div>
   </div>
 
-  <!-- ═══════════════ SCRIPT ═══════════════ -->
+  <!-- ════════════ SCRIPT ════════════ -->
   <script>
   (() => {
-
-    // ── Particles ──────────────────────────────────────────────
+    // ── Particles (lean: 12 initial, slow spawn) ──────────────
     const EMOJIS = ['💕','💖','💗','💓','✨','🌸','⭐','💫','🌷'];
-    function spawnParticle(container) {
+    function spawnParticle(cont) {
       const el = document.createElement('span');
-      el.classList.add('particle');
+      el.className = 'particle';
       el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
       el.style.left = (Math.random() * 100) + 'vw';
-      el.style.fontSize = (Math.random() * 1.3 + .5) + 'rem';
-      const dur = Math.random() * 9 + 7;
+      el.style.fontSize = (Math.random() * 1.2 + .5) + 'rem';
+      const dur = Math.random() * 8 + 8;
       el.style.animationDuration = dur + 's';
-      el.style.animationDelay = (Math.random() * -18) + 's';
-      container.appendChild(el);
+      el.style.animationDelay = (Math.random() * -16) + 's';
+      cont.appendChild(el);
       setTimeout(() => el.remove(), (dur + 2) * 1000);
     }
     const pCont = document.getElementById('particles');
-    for (let i = 0; i < 28; i++) spawnParticle(pCont);
-    setInterval(() => spawnParticle(pCont), 700);
+    for (let i = 0; i < 12; i++) spawnParticle(pCont);
+    setInterval(() => spawnParticle(pCont), 1400);
 
-    // ── 3D Card tilt + glare on mouse move ──────────────────────
-    const scene = document.getElementById('cardScene');
-    const card  = document.getElementById('mainCard');
-    let tiltEnabled = false;
+    // ── References ────────────────────────────────────────────
+    const yesBtn    = document.getElementById('yesBtn');
+    const noBtn     = document.getElementById('noBtn');
+    const questionT = document.getElementById('questionText');
+    const subT      = document.getElementById('subText');
+    const emojiWrap = document.getElementById('emojiWrap');
+    const catFace   = document.getElementById('catFace');
+    const catCap    = document.getElementById('catCaption');
+    const celebr    = document.getElementById('celebration');
 
-    // Enable tilt after entrance animation finishes
-    setTimeout(() => { tiltEnabled = true; }, 950);
+    let noClicks = 0;
+    let running  = false;
+    let yesScale = 1;
+    let evadeT   = 0;
 
-    document.addEventListener('mousemove', (e) => {
-      if (!tiltEnabled) return;
-
-      // Tilt
-      const cx = window.innerWidth  / 2;
-      const cy = window.innerHeight / 2;
-      const dx = (e.clientX - cx) / cx;   // -1 to +1
-      const dy = (e.clientY - cy) / cy;
-      scene.style.transform = `rotateY(${dx * 10}deg) rotateX(${-dy * 10}deg)`;
-
-      // Glare follows cursor inside card
-      const r = card.getBoundingClientRect();
-      const mx = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
-      const my = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
-      card.style.setProperty('--mx', mx);
-      card.style.setProperty('--my', my);
-    });
-
-    document.addEventListener('mouseleave', () => {
-      if (!tiltEnabled) return;
-      scene.style.transform = 'rotateY(0deg) rotateX(0deg)';
-      scene.style.transition = 'transform .6s ease';
-      setTimeout(() => { scene.style.transition = ''; }, 620);
-    });
-
-    // ── Elements ───────────────────────────────────────────────
-    const yesBtn      = document.getElementById('yesBtn');
-    const noBtn       = document.getElementById('noBtn');
-    const questionTxt = document.getElementById('questionText');
-    const subTxt      = document.getElementById('subText');
-    const emojiWrap   = document.getElementById('emojiWrap');
-    const emojiEl     = document.getElementById('emojiEl');
-    const emojiCap    = document.getElementById('emojiCaption');
-    const celebration = document.getElementById('celebration');
-
-    // ── State ──────────────────────────────────────────────────
-    let noClicks   = 0;
-    let running    = false;
-    let yesScale   = 1;
-    let evadeTimer = 0;
-
-    const noStates = [
-      { q: 'Are you sure? 🥺',  s: 'Think really carefully...',   em: '😢', cap: "Please don't say no... 🥺" },
-      { q: 'Please... 😭💔',     s: "You're breaking my heart...", em: '😭', cap: "I'm literally sobbing right now..." },
-      { q: 'Nooo please 💔😭',   s: "My heart can't take it...",   em: '😭', cap: 'Still crying... just say Yes...' },
+    const states = [
+      { q: 'Are you sure? 🥺',  s: 'Think really carefully...', cap: "Please don't say no... 🥺" },
+      { q: 'Please... 😭💔',    s: "You're breaking my heart...", cap: "I'm literally crying right now..." },
+      { q: 'Nooo please 💔',    s: "My heart can't take it...",  cap: 'Still sobbing... just say Yes...' },
     ];
 
     noBtn.addEventListener('click', handleNo);
     yesBtn.addEventListener('click', handleYes);
 
-    function setTextAnimated(el, text) {
+    function fadeText(el, text) {
       el.classList.add('text-fade');
-      setTimeout(() => { el.textContent = text; el.classList.remove('text-fade'); }, 300);
+      setTimeout(() => { el.textContent = text; el.classList.remove('text-fade'); }, 270);
     }
 
     function handleNo() {
       noClicks++;
-      const s = noStates[Math.min(noClicks - 1, noStates.length - 1)];
-      setTextAnimated(questionTxt, s.q);
-      setTextAnimated(subTxt, s.s);
-      emojiEl.textContent = s.em;
-      emojiCap.textContent = s.cap;
+      const s = states[Math.min(noClicks - 1, states.length - 1)];
+      fadeText(questionT, s.q);
+      fadeText(subT, s.s);
+      catCap.textContent = s.cap;
       emojiWrap.classList.add('open');
 
-      if      (noClicks === 1) yesScale = 1.55;
-      else if (noClicks === 2) yesScale = 2.25;
-      else                     yesScale = Math.min(yesScale + .28, 3.4);
+      // Grow Yes
+      yesScale = noClicks === 1 ? 1.55 : Math.min(yesScale + .32, 3.2);
       yesBtn.style.transform = `scale(${yesScale})`;
 
-      if (noClicks === 2 && !running) startRunning();
+      // No starts running immediately on first click
+      if (!running) startRunning();
     }
 
     function handleYes() {
       document.removeEventListener('mousemove', onMouseNear);
       document.removeEventListener('touchmove', onTouchNear);
-      tiltEnabled = false;
-      scene.style.transform = 'rotateY(0deg) rotateX(0deg)';
-      celebration.classList.add('show');
+      celebr.classList.add('show');
       launchConfetti();
-      const cPart = document.getElementById('celebParticles');
-      for (let i = 0; i < 35; i++) setTimeout(() => spawnParticle(cPart), i * 70);
-      setInterval(() => spawnParticle(cPart), 450);
+      const cP = document.getElementById('celebParticles');
+      for (let i = 0; i < 28; i++) setTimeout(() => spawnParticle(cP), i * 90);
+      setInterval(() => spawnParticle(cP), 550);
     }
 
-    // ── Running No button ──────────────────────────────────────
+    // ── Running No button ─────────────────────────────────────
     function startRunning() {
       running = true;
+
       const rect = noBtn.getBoundingClientRect();
       noBtn.style.left = rect.left + 'px';
       noBtn.style.top  = rect.top  + 'px';
       noBtn.classList.add('running');
       jumpAway();
-      setInterval(jumpAway, 2800);
+
+      const iv = setInterval(jumpAway, 2000);
       document.addEventListener('mousemove', onMouseNear);
       document.addEventListener('touchmove', onTouchNear, { passive: true });
+
+      // Vanish after 4 s
+      setTimeout(() => {
+        clearInterval(iv);
+        document.removeEventListener('mousemove', onMouseNear);
+        document.removeEventListener('touchmove', onTouchNear);
+        noBtn.style.opacity = '0';
+        setTimeout(() => noBtn.remove(), 800);
+      }, 4000);
     }
 
     function jumpAway() {
-      const pad = 24;
-      const bw  = noBtn.offsetWidth  || 60;
-      const bh  = noBtn.offsetHeight || 36;
-      const x   = Math.random() * (window.innerWidth  - bw - pad * 2) + pad;
-      const y   = Math.random() * (window.innerHeight - bh - pad * 2) + pad;
-      noBtn.style.left = x + 'px';
-      noBtn.style.top  = y + 'px';
+      const pad = 20, bw = noBtn.offsetWidth || 90, bh = noBtn.offsetHeight || 44;
+      noBtn.style.left = (Math.random() * (window.innerWidth  - bw - pad * 2) + pad) + 'px';
+      noBtn.style.top  = (Math.random() * (window.innerHeight - bh - pad * 2) + pad) + 'px';
     }
 
     function onMouseNear(e) {
       const now = Date.now();
-      if (now - evadeTimer < 140) return;
-      const r  = noBtn.getBoundingClientRect();
-      const cx = r.left + r.width  / 2;
-      const cy = r.top  + r.height / 2;
-      if (Math.hypot(e.clientX - cx, e.clientY - cy) < 150) {
-        evadeTimer = now; jumpAway();
+      if (now - evadeT < 120) return;
+      const r = noBtn.getBoundingClientRect();
+      if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < 150) {
+        evadeT = now; jumpAway();
       }
     }
     function onTouchNear(e) {
-      if (e.touches.length > 0)
-        onMouseNear({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+      if (e.touches.length) onMouseNear({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
     }
 
-    // ── Confetti ───────────────────────────────────────────────
+    // ── Confetti ──────────────────────────────────────────────
     function launchConfetti() {
-      const pieces = ['💕','💖','💗','✨','⭐','🌸','💫','🌷','♥','★','✿'];
-      for (let i = 0; i < 90; i++) {
+      const pieces = ['💕','💖','💗','✨','⭐','🌸','💫','🌷','♥','★'];
+      for (let i = 0; i < 60; i++) {
         setTimeout(() => {
           const el = document.createElement('span');
-          el.classList.add('confetti-piece');
+          el.className = 'confetti-piece';
           el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
           el.style.left = Math.random() * 100 + 'vw';
           el.style.top  = '-40px';
-          const dur = Math.random() * 2.5 + 1.8;
+          const dur = Math.random() * 2 + 2;
           el.style.animationDuration = dur + 's';
-          el.style.fontSize = (Math.random() * 1.6 + .7) + 'rem';
+          el.style.fontSize = (Math.random() * 1.4 + .7) + 'rem';
           document.body.appendChild(el);
           setTimeout(() => el.remove(), dur * 1000 + 200);
-        }, i * 28);
+        }, i * 32);
       }
     }
 
