@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Question For You 💕</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <title>A Question For You my Miyoba 💕😁</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Nunito:wght@700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -96,9 +96,9 @@
     .gv { font-family: 'Great Vibes', cursive; }
 
     #questionText {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2.4rem, 7.5vw, 3.8rem);
-      color: #fff; line-height: 1.2;
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.7rem, 6vw, 2.6rem);
+      color: #fff; line-height: 1.3;
       text-shadow:
         1px 1px 0 rgba(210,55,105,.9),
         2px 2px 0 rgba(180,38,82,.65),
@@ -200,7 +200,12 @@
     .btn-no.running { position: fixed !important; z-index: 999; margin: 0; }
 
     /* ── Buttons row ── */
-    .btn-row { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-top: .5rem; }
+    .btn-row {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 1.2rem; margin-top: .5rem;
+    }
+    /* Yes wrapper keeps it centered when No is gone */
+    #yesBtn { flex-shrink: 0; transform-origin: center center; }
 
     /* ── Ornament ── */
     .ornament {
@@ -260,7 +265,7 @@
   <!-- ════════ CARD ════════ -->
   <div class="glass-card">
 
-    <div class="ornament">💕 💖 💕</div>
+    <div class="ornament">💕 For My Miyoba 💕</div>
 
     <h1 id="questionText" style="margin-bottom:.5rem;">Will you go on a date with me?</h1>
     <p  id="subText"       style="margin-bottom:.8rem;">I promise it'll be absolutely magical ✨</p>
@@ -341,7 +346,7 @@
 
     const NO_QUESTIONS = [
       "Will you go on a date with me?",
-      "Are you sure? 🥺",
+      "Are you sure mimi? 🥺",
       "Please reconsider... 💔",
       "I'll literally cry...",
       "My heart is breaking...",
@@ -449,12 +454,9 @@
       const curSize = parseFloat(window.getComputedStyle(noBtn).fontSize);
       if (noClicks >= 2) noBtn.style.fontSize = Math.max(curSize * .88, 10) + 'px';
 
-      // Grow Yes
-      const curYSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-      yesBtn.style.fontSize = Math.min(curYSize * 1.3, 48) + 'px';
-      const padY = Math.min(14 + noClicks * 4, 55);
-      const padX = Math.min(48 + noClicks * 8, 110);
-      yesBtn.style.padding = `${padY}px ${padX}px`;
+      // Grow Yes via scale — keeps it centered in flex layout
+      yesScale = Math.min(1 + noClicks * 0.28, 2.8);
+      yesBtn.style.transform = `scale(${yesScale})`;
 
       // Start running at click 3
       if (noClicks >= 3 && !running) startRunning();
@@ -491,7 +493,7 @@
         document.removeEventListener('mousemove', onMouseNear);
         document.removeEventListener('touchmove', onTouchNear);
         noBtn.style.opacity = '0';
-        showTease("The No button gave up 😏 Just say Yes!");
+        showTease("The No button gave up 😏 Just say Yes! love");
         setTimeout(() => noBtn.remove(), 800);
       }, 4000);
     }
